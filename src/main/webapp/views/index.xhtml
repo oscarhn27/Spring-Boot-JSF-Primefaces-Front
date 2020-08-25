@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Citas Medicas</title>
+	<h:outputStylesheet name="primeicons/primeicons.css"
+		library="primefaces" />
+	<link rel="stylesheet" href="../resources/css/styles.css"/>
+	<link rel="icon" href="../resources/images/icono.png" type="image/png"/>
+</h:head>
+<h:body onload="#{loginVista.inicio()}">
+
+	<p:sidebar widgetVar="sidebar" position="top" baseZIndex="10000">
+		<h1 style="font-weight: normal">Menú</h1>
+		<p:commandButton href="http://localhost:8080/views/register.xhtml"
+			value="Registro" oncomplete="PF('sidebar').hide()" />
+	</p:sidebar>
+
+	<p:commandButton icon="pi pi-arrow-down"
+		oncomplete="PF('sidebar').show()" />
+
+	<p:growl id="growl" sticky="true" showDetail="true" life="3000" />
+	
+	<h:form>
+		<p:spacer height="130px"></p:spacer>
+		<h:panelGrid columns="2" cellpadding="5"
+			style="margin:0 auto; padding:20px 15px; border: 1px black solid; align-items: center">
+			<f:facet name="header">
+				<p:row>
+					<p:column colspan="2">
+						<h2 style="text-align: center">Entrada</h2>
+					</p:column>
+				</p:row>
+			</f:facet>
+			<p:column>
+				<h:outputLabel for="username" value="Usuario:" />
+			</p:column>
+			<p:column>
+				<p:inputText id="username" value="#{loginVista.username}"
+					required="true" label="username" />
+			</p:column>
+			<p:column>
+				<h:outputLabel for="password" value="Contraseña:" />
+			</p:column>
+			<p:column>
+				<p:password id="password" value="#{loginVista.password}"
+					required="true" label="password" />
+			</p:column>
+
+			<f:facet name="footer">
+				<p:row>
+					<p:column colspan="2">
+						<p:selectOneRadio value="#{loginVista.stringTipo}" style="width:100%; text-align: center; margin-bottom:10px" required="true">
+							<f:selectItem itemLabel="Médico" itemValue="Medico" />
+							<f:selectItem itemLabel="Paciente" itemValue="Paciente" />
+						</p:selectOneRadio>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column colspan="2">
+						<p:commandButton update="growl" style="width: 100%" iconPos="center"
+							value="login" action="#{loginVista.login}"/>
+					</p:column>
+				</p:row>
+
+			</f:facet>
+		</h:panelGrid>
+	</h:form>
+</h:body>
+
+</html>
