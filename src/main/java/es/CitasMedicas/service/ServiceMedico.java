@@ -29,6 +29,7 @@ public class ServiceMedico implements IServiceMedico{
 		headers.setContentType(MediaType.APPLICATION_JSON);
 	}
 	
+	@Override
 	public Medico logear(UsuarioToLog user) throws RestClientException{
 		HttpEntity<UsuarioToLog> entity = new HttpEntity<UsuarioToLog>(user, headers);
 		return restTemplate.exchange(URL+"/log", HttpMethod.POST, entity, Medico.class).getBody();
