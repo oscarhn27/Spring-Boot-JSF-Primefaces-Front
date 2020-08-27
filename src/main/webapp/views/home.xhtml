@@ -7,25 +7,119 @@
 	<title>Citas Medicas</title>
 	<h:outputStylesheet name="primeicons/primeicons.css"
 		library="primefaces" />
-	<link rel="stylesheet" href="../resources/css/styles.css"/>
-	<link rel="icon" href="../resources/images/icono.png" type="image/png"/>
-	
+	<link rel="stylesheet" href="../resources/css/styles.css" />
+	<link rel="icon" href="../resources/images/icono.png" type="image/png" />
+
 </h:head>
-<h:body onload="#{homeVista.inicio()}">
+<h:body onload="#{homeVista.inicio()}" id="homeBody">
+
 	<p:sidebar widgetVar="sidebar" position="top" baseZIndex="10000">
 		<h1 style="font-weight: normal">Menú</h1>
-		<p:commandButton action="#{homeVista.logout}"
-			value="Logout" oncomplete="PF('sidebar').hide()" />
+		<h:form>
+			<h:panelGrid columns="3" cellspacing="10">
+				<p:commandButton action="#{homeVista.logout}" value="Logout" />
+				
+				<p:commandButton rendered="#{homeVista.isMedico}"
+					action="#{homeVista.mostrarPacientes}" update="homeBody"
+					oncomplete="PF('sidebar').hide()" value="Mostrar Pacientes" />
+					
+				<p:commandButton rendered="#{!homeVista.isMedico}"
+					action="#{homeVista.mostrarMedicos}" update="homeBody" 
+					oncomplete="PF('sidebar').hide()" value="Mostrar Médicos" />
+					
+				<p:commandButton action="#{homeVista.mostrarCitas}" update="homeBody" 
+					oncomplete="PF('sidebar').hide()" value="Mostrar Citas" />
+			</h:panelGrid>
+		</h:form>
 	</p:sidebar>
 
 	<p:commandButton icon="pi pi-arrow-down"
 		oncomplete="PF('sidebar').show()" />
-	
+
 	<p:growl id="growl2" showDetail="true" life="3000" />
+
+	<p:dataTable rendered="#{homeVista.mostrarMedicos}" var="medico"
+		value="#{homeVista.getMedicos()}" style="margin: 30px 120px">
+		<p:column headerText="Nombre">
+			<h:outputText value="#{medico.nombre}" />
+		</p:column>
+
+		<p:column headerText="Apellidos">
+			<h:outputText value="#{medico.apellidos}" />
+		</p:column>
+
+		<p:column headerText="Número de colegiado">
+			<h:outputText value="#{medico.numColegiado}" />
+		</p:column>
+
+		<p:column>
+			<h:panelGrid columns="2" cellpadding="5"
+				style="border-style: hidden; margin: auto">
+				<p:commandButton value="Editar" style="width: 100%; background: #00aa00" />
+				<p:commandButton value="Borrar" style="width: 100%; background: #f44336" />
+			</h:panelGrid>
+		</p:column>
+	</p:dataTable>
 	
-	<h:form>
-		<p:commandButton update="growl2" value="update" action="#{homeVista.inicio}"/>	
-	</h:form>
+	<p:dataTable rendered="#{homeVista.mostrarPacientes}" var="paciente"
+		value="#{homeVista.getPacientes()}" style="margin: 30px 120px">
+		<p:column headerText="Nombre">
+			<h:outputText value="#{paciente.nombre} #{paciente.apellidos}" />
+		</p:column>
+
+		<p:column headerText="Número de SS">
+			<h:outputText value="#{paciente.nSS}" />
+		</p:column>
+
+		<p:column headerText="Número de tarjeta">
+			<h:outputText value="#{paciente.numTarjeta}" />
+		</p:column>
+		
+		<p:column headerText="Teléfono">
+			<h:outputText value="#{paciente.telefono}" />
+		</p:column>
+		
+		<p:column headerText="Dirección">
+			<h:outputText value="#{paciente.direccion}" />
+		</p:column>
+
+		<p:column>
+			<h:panelGrid columns="2" cellpadding="5"
+				style="border-style: hidden; margin: auto">
+				<p:commandButton value="Editar" style="width: 100%; background: #00aa00" />
+				<p:commandButton value="Borrar" style="width: 100%; background: #f44336" />
+			</h:panelGrid>
+		</p:column>
+	</p:dataTable>
+	
+	<p:dataTable rendered="#{homeVista.mostrarCitas}" var="cita"
+		value="#{homeVista.getCitas()}" style="margin: 30px 120px">
+		
+		<p:column headerText="Nombre del médico" rendered="#{!homeVista.isMedico}">
+			<h:outputText value="#{cita.medicoC.nombre} #{cita.medicoC.apellidos}" />
+		</p:column>
+
+		<p:column headerText="Nombre del paciente" rendered="#{homeVista.isMedico}">
+			<h:outputText value="#{cita.pacienteC.nombre} #{cita.pacienteC.apellidos}" />
+		</p:column>
+
+		<p:column headerText="Turno">
+			<h:outputText value="#{cita.turno}" />
+		</p:column>
+		
+		<p:column headerText="Motivo">
+			<h:outputText value="#{cita.motivoCita}" />
+		</p:column>
+		
+		<p:column headerText="Fecha">
+			<h:outputText value="#{homeVista.printDate(cita.fechaHora)}" />
+		</p:column>
+
+		<p:column style="width: auto">
+			<p:commandButton value="Borrar" style="width:50%; margin:0 25%; background: #f44336" />
+		</p:column>
+	</p:dataTable>
+
 </h:body>
 
 </html>

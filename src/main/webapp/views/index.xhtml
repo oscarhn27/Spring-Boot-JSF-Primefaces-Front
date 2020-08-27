@@ -14,14 +14,16 @@
 
 	<p:sidebar widgetVar="sidebar" position="top" baseZIndex="10000">
 		<h1 style="font-weight: normal">Menú</h1>
-		<p:commandButton href="http://localhost:8080/views/register.xhtml"
-			value="Registro" oncomplete="PF('sidebar').hide()" />
+		<h:form>
+			<p:commandButton action="register.xhtml?faces-redirect=true"
+			value="Registro" oncomplete="PF('sidebar').hide()" />		
+		</h:form>
 	</p:sidebar>
 
 	<p:commandButton icon="pi pi-arrow-down"
 		oncomplete="PF('sidebar').show()" />
 
-	<p:growl id="growl" sticky="true" showDetail="true" life="3000" />
+	<p:growl id="growlLogin" sticky="true" showDetail="true" life="3000" />
 	
 	<h:form>
 		<p:spacer height="130px"></p:spacer>
@@ -60,7 +62,7 @@
 				</p:row>
 				<p:row>
 					<p:column colspan="2">
-						<p:commandButton update="growl" style="width: 100%" iconPos="center"
+						<p:commandButton update="growlLogin" style="width: 100%" iconPos="center"
 							value="login" action="#{loginVista.login}"/>
 					</p:column>
 				</p:row>
