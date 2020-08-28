@@ -1,4 +1,4 @@
-package es.CitasMedicas.excepciones;
+package es.citasmedicas.excepciones;
 
 public class UserExistException extends Exception{
 

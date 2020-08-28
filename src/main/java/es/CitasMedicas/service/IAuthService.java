@@ -1,9 +1,9 @@
-package es.CitasMedicas.service;
+package es.citasmedicas.service;
 
-import es.CitasMedicas.dominio.UserType;
-import es.CitasMedicas.dominio.Usuario;
-import es.CitasMedicas.excepciones.UserExistException;
-import es.CitasMedicas.excepciones.UserNotExistException;
+import es.citasmedicas.excepciones.UserExistException;
+import es.citasmedicas.excepciones.UserNotExistException;
+import es.citasmedicas.modelo.UserType;
+import es.citasmedicas.modelo.Usuario;
 	
 public interface IAuthService {
 	

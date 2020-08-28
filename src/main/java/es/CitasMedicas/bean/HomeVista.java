@@ -1,11 +1,14 @@
-package es.CitasMedicas.bean;
+package es.citasmedicas.bean;
 
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -13,13 +16,13 @@ import javax.inject.Named;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import es.CitasMedicas.dominio.Cita;
-import es.CitasMedicas.dominio.Medico;
-import es.CitasMedicas.dominio.Paciente;
-import es.CitasMedicas.dominio.UserType;
-import es.CitasMedicas.dominio.Usuario;
-import es.CitasMedicas.excepciones.UserNotExistException;
-import es.CitasMedicas.service.IAuthService;
+import es.citasmedicas.excepciones.UserNotExistException;
+import es.citasmedicas.modelo.Cita;
+import es.citasmedicas.modelo.Medico;
+import es.citasmedicas.modelo.Paciente;
+import es.citasmedicas.modelo.UserType;
+import es.citasmedicas.modelo.Usuario;
+import es.citasmedicas.service.IAuthService;
 
 @Named(value = "homeVista")
 @SessionScoped
@@ -33,7 +36,13 @@ public class HomeVista implements Serializable {
 	private IAuthService authService;
 
 	private boolean isMedico, mostrarMedicos, mostrarCitas, mostrarPacientes;
-
+	
+	@PostConstruct
+	public void init() {
+		currentUser = null;
+		isMedico = false;
+	}
+	
 	public void inicio() throws IOException {
 		try {
 			currentUser = authService.getUsuarioActual();
@@ -112,7 +121,7 @@ public class HomeVista implements Serializable {
 		mostrarCitas = true;
 	}
 
-	public List<Medico> getMedicos(){
+	public Set<Medico> getMedicos(){
 		if (isMedico)
 			return null;
 		return ((Paciente)currentUser).getMedicos();
@@ -121,10 +130,12 @@ public class HomeVista implements Serializable {
 	public List<Paciente> getPacientes(){
 		if (!isMedico)
 			return null;
-		return ((Medico)currentUser).getPacientes();
+		List<Paciente> pacientes = new ArrayList<Paciente>();
+		pacientes.addAll(((Medico)currentUser).getPacientes());
+		return pacientes;
 	}
 	
-	public List<Cita> getCitas(){
+	public Set<Cita> getCitas(){
 		if (isMedico) {
 			return ((Medico)currentUser).getCitaDePacientes();
 		} else {
@@ -142,5 +153,5 @@ public class HomeVista implements Serializable {
 		mostrarCitas = false;
 		mostrarPacientes = false;
 	}
-
+	
 }

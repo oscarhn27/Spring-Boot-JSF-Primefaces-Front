@@ -1,13 +1,17 @@
-package es.CitasMedicas.service;
+package es.citasmedicas.service.impl;
+
+import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
-import es.CitasMedicas.dominio.UserType;
-import es.CitasMedicas.dominio.Usuario;
-import es.CitasMedicas.excepciones.UserExistException;
-import es.CitasMedicas.excepciones.UserNotExistException;
+import es.citasmedicas.excepciones.UserExistException;
+import es.citasmedicas.excepciones.UserNotExistException;
+import es.citasmedicas.modelo.UserType;
+import es.citasmedicas.modelo.Usuario;
+import es.citasmedicas.service.IAuthService;
 
 @Service
+@Transactional
 public class AuthService implements IAuthService {
 
 	static private Usuario user;

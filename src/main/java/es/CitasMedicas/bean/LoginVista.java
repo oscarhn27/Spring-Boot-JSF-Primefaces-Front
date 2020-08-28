@@ -1,4 +1,4 @@
-package es.CitasMedicas.bean;
+package es.citasmedicas.bean;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -9,15 +9,15 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.client.RestClientException;
 
-import es.CitasMedicas.dominio.UserType;
-import es.CitasMedicas.dominio.Usuario;
-import es.CitasMedicas.dominio.UsuarioToLog;
-import es.CitasMedicas.excepciones.UserExistException;
-import es.CitasMedicas.service.IAuthService;
-import es.CitasMedicas.service.IServiceMedico;
-import es.CitasMedicas.service.IServicePaciente;
+import es.citasmedicas.excepciones.UserExistException;
+import es.citasmedicas.modelo.UserType;
+import es.citasmedicas.modelo.Usuario;
+import es.citasmedicas.modelo.UsuarioToLog;
+import es.citasmedicas.service.IAuthService;
+import es.citasmedicas.service.IServiceMedico;
+import es.citasmedicas.service.IServicePaciente;
+import javassist.NotFoundException;
 
 @Named(value = "loginVista")
 @SessionScoped
@@ -51,13 +51,12 @@ public class LoginVista implements Serializable{
 			} else {
 				user = pacienteService.logear(userToLog);
 			}
-		} catch (RestClientException e) {
+		} catch (NotFoundException e) {
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error en la autenticacion", "Usuario o contraseña incorrectos");
 			FacesContext.getCurrentInstance().addMessage(null, message);
 			return;
 		}
 		try {
-			user.setTipo(getTipo());
 			authService.autenticar(user);
 		} catch (UserExistException e) {
 			System.out.println("Ya hay usuarios conectados");

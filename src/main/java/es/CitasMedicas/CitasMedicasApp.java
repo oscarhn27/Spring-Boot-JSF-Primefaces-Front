@@ -3,24 +3,24 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package es.CitasMedicas;
+package es.citasmedicas;
 
 import com.sun.faces.config.ConfigureListener;
 import javax.faces.webapp.FacesServlet;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.web.client.RestTemplate;
 
-/**
- *
- * @author SergioRios
- */
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"es.citasmedicas.service.impl","es.citasmedicas.bean"})
+@EnableJpaRepositories(basePackages = {"es.citasmedicas.dao"})
+@EntityScan(basePackages ={"es.citasmedicas.modelo"})
 public class CitasMedicasApp {
 
     public static void main(String[] args) {

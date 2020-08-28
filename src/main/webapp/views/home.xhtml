@@ -18,17 +18,18 @@
 		<h:form>
 			<h:panelGrid columns="3" cellspacing="10">
 				<p:commandButton action="#{homeVista.logout}" value="Logout" />
-				
+
 				<p:commandButton rendered="#{homeVista.isMedico}"
-					action="#{homeVista.mostrarPacientes}" update="homeBody"
-					oncomplete="PF('sidebar').hide()" value="Mostrar Pacientes" />
-					
+					action="#{homeVista.mostrarPacientes}" oncomplete="PF('sidebar').hide()"
+					update="tablas" value="Mostrar Pacientes" />
+
 				<p:commandButton rendered="#{!homeVista.isMedico}"
-					action="#{homeVista.mostrarMedicos}" update="homeBody" 
-					oncomplete="PF('sidebar').hide()" value="Mostrar Médicos" />
-					
-				<p:commandButton action="#{homeVista.mostrarCitas}" update="homeBody" 
-					oncomplete="PF('sidebar').hide()" value="Mostrar Citas" />
+					action="#{homeVista.mostrarMedicos}" oncomplete="PF('sidebar').hide()"
+					update="tablas" value="Mostrar Médicos" />
+
+				<p:commandButton action="#{homeVista.mostrarCitas}"
+					oncomplete="PF('sidebar').hide()"
+					update="tablas" value="Mostrar Citas" />
 			</h:panelGrid>
 		</h:form>
 	</p:sidebar>
@@ -38,87 +39,151 @@
 
 	<p:growl id="growl2" showDetail="true" life="3000" />
 
-	<p:dataTable rendered="#{homeVista.mostrarMedicos}" var="medico"
-		value="#{homeVista.getMedicos()}" style="margin: 30px 120px">
-		<p:column headerText="Nombre">
-			<h:outputText value="#{medico.nombre}" />
-		</p:column>
-
-		<p:column headerText="Apellidos">
-			<h:outputText value="#{medico.apellidos}" />
-		</p:column>
-
-		<p:column headerText="Número de colegiado">
-			<h:outputText value="#{medico.numColegiado}" />
-		</p:column>
-
-		<p:column>
-			<h:panelGrid columns="2" cellpadding="5"
-				style="border-style: hidden; margin: auto">
-				<p:commandButton value="Editar" style="width: 100%; background: #00aa00" />
-				<p:commandButton value="Borrar" style="width: 100%; background: #f44336" />
-			</h:panelGrid>
-		</p:column>
-	</p:dataTable>
+	<h:form id="tablas">
+	<!-- **** TABLA QUE MUESTRA LOS MEDICOS QUE TIENE UN PACIENTE **** -->
+		<p:dataTable rendered="#{homeVista.mostrarMedicos}" var="medico"
+			value="#{homeVista.getMedicos()}" style="margin: 30px 120px">
+			<p:column headerText="Nombre">
+				<h:outputText value="#{medico.nombre}" />
+			</p:column>
 	
-	<p:dataTable rendered="#{homeVista.mostrarPacientes}" var="paciente"
-		value="#{homeVista.getPacientes()}" style="margin: 30px 120px">
-		<p:column headerText="Nombre">
-			<h:outputText value="#{paciente.nombre} #{paciente.apellidos}" />
-		</p:column>
-
-		<p:column headerText="Número de SS">
-			<h:outputText value="#{paciente.nSS}" />
-		</p:column>
-
-		<p:column headerText="Número de tarjeta">
-			<h:outputText value="#{paciente.numTarjeta}" />
-		</p:column>
-		
-		<p:column headerText="Teléfono">
-			<h:outputText value="#{paciente.telefono}" />
-		</p:column>
-		
-		<p:column headerText="Dirección">
-			<h:outputText value="#{paciente.direccion}" />
-		</p:column>
-
-		<p:column>
-			<h:panelGrid columns="2" cellpadding="5"
-				style="border-style: hidden; margin: auto">
-				<p:commandButton value="Editar" style="width: 100%; background: #00aa00" />
-				<p:commandButton value="Borrar" style="width: 100%; background: #f44336" />
-			</h:panelGrid>
-		</p:column>
-	</p:dataTable>
+			<p:column headerText="Apellidos">
+				<h:outputText value="#{medico.apellidos}" />
+			</p:column>
 	
-	<p:dataTable rendered="#{homeVista.mostrarCitas}" var="cita"
-		value="#{homeVista.getCitas()}" style="margin: 30px 120px">
-		
-		<p:column headerText="Nombre del médico" rendered="#{!homeVista.isMedico}">
-			<h:outputText value="#{cita.medicoC.nombre} #{cita.medicoC.apellidos}" />
-		</p:column>
+			<p:column headerText="Número de colegiado">
+				<h:outputText value="#{medico.numColegiado}" />
+			</p:column>
+	
+			<p:column>
+				<h:panelGrid columns="2" cellpadding="5"
+					style="border-style: hidden; margin: auto">
+					<p:commandButton value="Editar"
+						style="width: 100%; background: #00aa00" />
+					<p:commandButton value="Borrar"
+						style="width: 100%; background: #f44336" />
+				</h:panelGrid>
+			</p:column>
+		</p:dataTable>
 
-		<p:column headerText="Nombre del paciente" rendered="#{homeVista.isMedico}">
-			<h:outputText value="#{cita.pacienteC.nombre} #{cita.pacienteC.apellidos}" />
-		</p:column>
+	<!-- **** TABLA QUE MUESTRA LOS PACIENTE QUE TIENE UN MEDICO **** -->
+		<p:dataTable rendered="#{homeVista.mostrarPacientes}" var="paciente"
+			value="#{homeVista.getPacientes()}" style="margin: 30px 120px">
+			<p:column headerText="Nombre" sortBy="#{paciente.apellidos}">
+				<h:outputText value="#{paciente.nombre} #{paciente.apellidos}" />
+			</p:column>
+	
+			<p:column headerText="Número de SS" sortBy="#{paciente.nSS}">
+				<h:outputText value="#{paciente.nSS}" />
+			</p:column>
+	
+			<p:column headerText="Número de tarjeta" sortBy="#{paciente.numTarjeta}">
+				<h:outputText value="#{paciente.numTarjeta}" />
+			</p:column>
+	
+			<p:column headerText="Teléfono" sortBy="#{paciente.telefono}">
+				<h:outputText value="#{paciente.telefono}" />
+			</p:column>
+	
+			<p:column headerText="Dirección" sortBy="#{paciente.direccion}">
+				<h:outputText value="#{paciente.direccion}" />
+			</p:column>
+	
+			<p:column>
+				<h:panelGrid columns="2" cellpadding="5"
+					style="border-style: hidden; margin: auto">
+					<p:commandButton value="Editar"
+						style="width: 100%; background: #00aa00" />
+					<p:commandButton value="Borrar"
+						style="width: 100%; background: #f44336" />
+				</h:panelGrid>
+			</p:column>
+		</p:dataTable>
 
-		<p:column headerText="Turno">
-			<h:outputText value="#{cita.turno}" />
-		</p:column>
-		
-		<p:column headerText="Motivo">
-			<h:outputText value="#{cita.motivoCita}" />
-		</p:column>
-		
-		<p:column headerText="Fecha">
-			<h:outputText value="#{homeVista.printDate(cita.fechaHora)}" />
-		</p:column>
+	<!-- **** TABLA QUE MUESTRA LAS CITAS QUE TIENE UN PACIENTE O UN MEDICO **** -->
+		<p:dataTable rendered="#{homeVista.mostrarCitas}" var="cita"
+			id="citaTablas" value="#{homeVista.getCitas()}"
+			style="margin: 30px 120px"
+			paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+			paginator="true" rows="10">
 
-		<p:column style="width: auto">
+			<f:facet name="title">
+				<h2>Citas Médicas</h2>
+			</f:facet>
+			<f:facet name="{Exporters}">
+				<div style="float: right; padding-top: 5px;">
+					<h:commandLink title="Exportar a .xls">
+						<p:graphicImage name="images/excel.png" width="24" />
+						<p:dataExporter type="xls" target="citaTablas" fileName="citas" />
+					</h:commandLink>
+
+					<h:commandLink title="Exportar a .xlsx">
+						<p:graphicImage name="images/xlsx.png" width="24" />
+						<p:dataExporter type="xlsxstream" target="citaTablas"
+							fileName="citas" />
+					</h:commandLink>
+
+					<h:commandLink title="Exportar a .pdf">
+						<p:graphicImage name="images/pdf.png" width="24" />
+						<p:dataExporter type="pdf" target="citaTablas" fileName="citas" />
+					</h:commandLink>
+
+					<h:commandLink title="Exportar a .csv">
+						<p:graphicImage name="images/csv.png" width="24" />
+						<p:dataExporter type="csv" target="citaTablas" fileName="citas" />
+					</h:commandLink>
+
+					<h:commandLink title="Exportar a .xml">
+						<p:graphicImage name="images/xml.png" width="24" />
+						<p:dataExporter type="xml" target="citaTablas" fileName="citas" />
+					</h:commandLink>
+				</div>
+			</f:facet>
+
+			<p:column rendered="#{!homeVista.isMedico}">
+				<f:facet name="header">
+					<h:outputText value="Nombre del médico" />
+				</f:facet>
+				<h:outputText
+					value="#{cita.medicoC.nombre} #{cita.medicoC.apellidos}" />
+			</p:column>
+
+			<p:column rendered="#{homeVista.isMedico}">
+				<f:facet name="header">
+					<h:outputText value="Nombre del paciente" />
+				</f:facet>
+				<h:outputText
+					value="#{cita.pacienteC.nombre} #{cita.pacienteC.apellidos}" />
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">
+					<h:outputText value="Turno" />
+				</f:facet>
+				<h:outputText value="#{cita.turno}" />
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">
+					<h:outputText value="Motivo" />
+				</f:facet>
+				<h:outputText value="#{cita.motivoCita}" />
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">
+					<h:outputText value="Fecha" />
+				</f:facet>
+				<h:outputText value="#{homeVista.printDate(cita.fechaHora)}" />
+			</p:column>
+
+
+			<!--p:column style="width: auto">
 			<p:commandButton value="Borrar" style="width:50%; margin:0 25%; background: #f44336" />
-		</p:column>
-	</p:dataTable>
+		</p:column-->
+		</p:dataTable>
+	</h:form>
+
 
 </h:body>
 

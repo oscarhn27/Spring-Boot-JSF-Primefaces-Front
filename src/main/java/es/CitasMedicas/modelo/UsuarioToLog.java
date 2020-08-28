@@ -1,4 +1,4 @@
-package es.CitasMedicas.dominio;
+package es.citasmedicas.modelo;
 
 public class UsuarioToLog {
 	
